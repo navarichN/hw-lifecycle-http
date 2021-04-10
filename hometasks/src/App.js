@@ -1,23 +1,32 @@
-import logo from './logo.svg';
 import './App.css';
+import Watches from './components/Watches/Watches';
+import Crud from './components/Crud/Crud';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from "react-router-dom";
+
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <div>
+          <nav className="navigation">
+            <ul className="navigation-list">
+              <li>
+                <Link to="/Watches">Watches</Link>
+              </li>
+              <li>
+                <Link to="/Crud">Crud</Link>
+              </li>
+            </ul>
+          </nav>
+          <Route exact path="/Watches" component={Watches} />
+          <Route exact path="/Crud" component={Crud} />
+        </div>
+      </Router>
     </div>
   );
 }
