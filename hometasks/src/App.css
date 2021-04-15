@@ -35,3 +35,44 @@ form {
 .adding {
   color: white;
 } 
+
+.output-clocks {
+  display: flex;
+  flex-direction: row;
+  margin-top: 40px;
+  flex-wrap: wrap;
+  width: 900px;
+  height: auto;
+}
+
+.clock {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 20px;
+  align-items: center;
+  width: 250px;
+  height: 60px;
+}
+
+.clock p {
+  font-size: 20px;
+}
+
+.clock button {
+  width: 40px;
+  height: 30px;
+  background-color: rgb(194, 85, 85);
+  -webkit-writing-mode: horizontal-tb !important;
+  -webkit-appearance: button;
+  border-color: rgb(175, 104, 104) rgb(209, 209, 209) rgb(186, 186, 186);
+  border-style: solid;
+  font: 400 11px system-ui;
+  color: aliceblue;
+  font-weight: bold;
+}
+
+.clock button:hover {
+  background-color:rgb(143, 43, 43);
+}
+
