@@ -17,19 +17,23 @@ app.use(cors());
 
 const router = new Router();
 
-router.get("/",async (ctx,next)=>{
-  const notes = [{
-    "id": 0,
-    "content": "То, что было введно в поле ввода"
-  }];
-  console.log('ctx',ctx,'next', next)
+
+const notes = [];
+
+router.get("/notes",async (ctx,next)=>{
   ctx.status = HttpStatus.OK;
   ctx.body = notes;
   await next();
 })
-.post('/', (ctx, next) => {
+.post('/notes',async (ctx, next) => {
   ctx.body = ctx.request.body;
-  console.log(ctx.body)
+  notes.push(ctx.body)
+  await next();
+})
+router.delete('/notes',async (ctx, next) => {
+  ctx.body = ctx.request.body;
+  // notes = notes.filter((el) => el.id !== ctx.request.body.id)
+  await next();
 })
 
 app.use(router.routes()).use(router.allowedMethods());
