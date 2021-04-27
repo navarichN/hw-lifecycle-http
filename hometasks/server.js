@@ -17,8 +17,7 @@ app.use(cors());
 
 const router = new Router();
 
-
-const notes = [];
+let notes = [];
 
 router.get("/notes",async (ctx,next)=>{
   ctx.status = HttpStatus.OK;
@@ -30,10 +29,9 @@ router.get("/notes",async (ctx,next)=>{
   notes.push(ctx.body)
   await next();
 })
-router.delete('/notes',async (ctx, next) => {
-  ctx.body = ctx.request.body;
-  // notes = notes.filter((el) => el.id !== ctx.request.body.id)
-  await next();
+.delete('/notes/:id', async (req, next) => {
+  req.body = notes;
+  notes = notes.filter((el) => el.id !== Number(req.params.id))
 })
 
 app.use(router.routes()).use(router.allowedMethods());

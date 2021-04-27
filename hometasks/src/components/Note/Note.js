@@ -4,7 +4,6 @@ import axios from "axios";
 export default class Note extends Component {
   constructor(props) {
     super(props);
-
   }
 
   render() {

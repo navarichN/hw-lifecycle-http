@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import Note from '../Note/Note';
 import axios from "axios";
+import randomInteger from '../../randomInteger';
 
 export default function Crud(){
     const [note, setNote] = useState({})
@@ -9,7 +10,6 @@ export default function Crud(){
     const getNotes = async () => {
         try {
             const res = await axios.get('http://localhost:7070/notes')
-            console.log('res in getNotes:',res)
             setNotes(res.data)
         } catch (error) {
             console.log(error)
@@ -18,11 +18,13 @@ export default function Crud(){
     
     const postNote = async (e) => {
         e.preventDefault()
+        notes.forEach((el) => {
+            if(el.id === note.id){
+                note.id = randomInteger(1, 1000000000) + randomInteger(1, 10000)
+            }
+        })
         try {
             let res = await axios.post('http://localhost:7070/notes', note)      
-    
-            console.log(res);
-            console.log('res in postNotes:',res);
             await getNotes();
         } catch (error) {
             console.log(error)
@@ -32,18 +34,17 @@ export default function Crud(){
     const deleteNote = async (e) => {
         e.preventDefault()
         e.stopPropagation()
+        delete notes[e.target.parentNode.id]
+        setNotes(prev => ({
+            ...prev
+        }))
         try {
-            let res = await axios.delete('http://localhost:7070/notes/' + e.target.parentNode.id)
+            let res = await axios.delete(`http://localhost:7070/notes/${e.target.parentNode.id}`)
             console.log(res)
             await getNotes();
         } catch (error) {
             console.log(error)
         }
-    }
-
-    function randomInteger(min, max) {
-        let rand = min + Math.random() * (max + 1 - min);
-        return Math.floor(rand);
     }
 
 
@@ -52,7 +53,11 @@ export default function Crud(){
             <h1>Notes</h1>
             <button onClick={getNotes}>Обновить</button>
             <div className="notes-output">
-            {(notes.length >= 1) ? notes.map((value,index)=>{return <Note content = {value.content} id = {value.id} key = {index} onClick={(e)=>deleteNote(e)}/>}) : <h3 className="note-no">здесь пока нет заметок</h3>}
+                {(notes.length >= 1) 
+                ? notes.map((value,index) => {
+                    return <Note content = {value.content} id = {value.id} key = {index} onClick={(e)=>deleteNote(e)}/>
+                  })
+                : <h3 className="note-no">здесь пока нет заметок</h3>}
             </div>
             <form className="notes-input">
                 <label htmlFor="note">
@@ -65,7 +70,6 @@ export default function Crud(){
                             }
                         )
                     }}>
-                        
                     </textarea>
                 </label>
                 <label className="posting" htmlFor="posting">
